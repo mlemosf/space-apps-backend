@@ -24,6 +24,21 @@ class SatelliteEndpoints(Resource):
 		satelliteFields['tle'] = self.parseTle(tle)
 		return satelliteFields
 
+	def parsePosFields(self, data):
+		satelliteFields = {}
+		satelliteFields['id'] = data['info']['satid']
+		satelliteFields['name'] = data['info']['satname']
+		pos = data['positions'][0]
+		satelliteFields['pos'] = self.parsePos(pos)
+		return satelliteFields
+	
+
+	def parsePos(self, pos):
+		posDict = {}
+		posDict['lat'] = pos['satlatitude']
+		posDict['long'] = pos['satlongitude']
+		posDict['alt'] = pos['sataltitude']
+		return posDict	
 
 	def parseTle(self, tle):
 		""" Realiza a retirada dos campos do tle da requisicão
@@ -60,8 +75,9 @@ class SatelliteEndpoints(Resource):
 	def get(self):
 		""" Endpoint que faz a requisicão dos dados dos satélites
 		"""
-		tleFields = self.requestData("https://www.n2yo.com/rest/v1/satellite/tle/25544&apiKey=PWRZDT-4JMAK7-FDEPZM-47V1")
+		# tleFields = self.requestData("https://www.n2yo.com/rest/v1/satellite/tle/39129&apiKey=PWRZDT-4JMAK7-FDEPZM-47V1")
 		positionFields = self.requestData("https://www.n2yo.com/rest/v1/satellite/positions/25544/41.702/-76.014/0/2/&apiKey=PWRZDT-4JMAK7-FDEPZM-47V1")
-		parsedTleFields = self.parseTleFields(tleFields)
-		return parsedTleFields
+		parsedPosFields = self.parsePosFields(positionFields)
+
+		return parsedPosFields
 		# return {'hello': 'world'}
