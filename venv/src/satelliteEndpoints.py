@@ -4,14 +4,13 @@ import requests
 
 class SatelliteEndpoints(Resource):
 
+# TLE
 
-	def getFields(self, url):
+	def requestData(self, url):
 		r = requests.get(url=url)
-		return r
+		return r.json()
 
-
-
-	def parseFields(self, data):
+	def parseTleFields(self, data):
 		""" Realiza o parse dos campos retornados pela api
 		Arguments:
 			fields {dict} -- Campos retornados pela API
@@ -53,12 +52,16 @@ class SatelliteEndpoints(Resource):
 		tleDict['revolutions_per_day'] = line2[52:63]
 		return tleDict
 
+# POSITION
+
+
+	# def getPositionFields()
+
 	def get(self):
 		""" Endpoint que faz a requisicão dos dados dos satélites
 		"""
-		fields = self.getFields("https://www.n2yo.com/rest/v1/satellite/tle/25544&apiKey=PWRZDT-4JMAK7-FDEPZM-47V1")
-		data = fields.json()
-		parsedFields = self.parseFields(data)
-		# print(parsedFields)
-		return parsedFields
+		tleFields = self.requestData("https://www.n2yo.com/rest/v1/satellite/tle/25544&apiKey=PWRZDT-4JMAK7-FDEPZM-47V1")
+		positionFields = self.requestData("https://www.n2yo.com/rest/v1/satellite/positions/25544/41.702/-76.014/0/2/&apiKey=PWRZDT-4JMAK7-FDEPZM-47V1")
+		parsedTleFields = self.parseTleFields(tleFields)
+		return parsedTleFields
 		# return {'hello': 'world'}
