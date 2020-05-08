@@ -54,7 +54,7 @@ python-libtorrent==1.1.13
 pytoml==0.1.21
 pytz==2019.3
 PyYAML==5.1.2
-qutebrowser==1.8.1
+qutebrowser==1.11.1
 ranger-fm==1.9.2
 requests==2.22.0
 requests-file==1.4.3
